@@ -1,7 +1,9 @@
 module.exports = {
-  mode: "jit",
   content: ["./src/**/*.{html,js}"],
   theme: {
+    fontFamily: {
+      'sans': ['Roboto', 'Open Sans', 'Helvetica']
+    },
     extend: {},
   },
   plugins: [],
