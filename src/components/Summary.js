@@ -5,13 +5,11 @@ function Summary(props) {
     const current   = props.weather.current;
     const location  = props.weather.location;
     const forecast  = props.weather.forecast;
-
-    const days      = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]
+    const days      = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
     const date      = new Date (location.localtime);
     const day       = days[getDay(date)];
 
-    return (
-        
+    return (        
         <div className='text-gray-100'>
             <h2 className='text-6xl text-center font-medium ml-10'>{Math.round(current.temp_c)}°<sup>c</sup></h2>
             <p className='text-center font-medium text-2xl my-2 capitalize'>{current.condition.text}</p>

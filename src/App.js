@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react';
+import { getHours, parseISO } from 'date-fns'
 import './App.css';
-import Outlook from './components/Outlook';
 import Summary from './components/Summary';
 
 function App() {
   const [weather, setWeather] = useState();
-
+  
   async function getWeather() {
-    await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_API_KEY}&q=Harare&days=1&aqi=no&alerts=no`)
+    await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${process.env.REACT_APP_API_KEY}&q=Cape+Town&days=1&aqi=no&alerts=no`)
         .then(response => response.json())
         .then(response =>  {
-          setWeather(response)
+          setWeather(response);
         })
         .catch(err => console.error(err));
   }
 
   useEffect(() => {
-      getWeather();
-      console.log(weather);      
+      getWeather();     
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -28,14 +27,24 @@ function App() {
           weather ? <Summary weather={weather} /> : <span>Loading...</span>
         }
         <div className='flex justify-between overflow-x-auto mt-6'>
-          <Outlook />
-          <Outlook />
-          <Outlook />
-          <Outlook />
-          <Outlook />
-          <Outlook />
-          <Outlook />
-          <Outlook />
+        {
+          weather ? weather.forecast.forecastday[0].hour.map((hour) => {
+            const hourOfDay = getHours(parseISO(hour.time));
+
+            return (
+              <div className='flex flex-col text-center text-white mr-10 last:mr-0' key={hour.time}>
+                  <p className='mb-3'>{Math.round(hour.temp_c)}°</p>
+                  <img 
+                      src={hour.condition.icon} 
+                      alt="icon"
+                      className='inline'
+                  />
+                  <p className='text-blue-400 mt-3 mb-2'>{hour.chance_of_rain}%</p>                  
+                  <p>{hourOfDay}:00</p>
+                  <p></p>
+              </div>)
+          })  : <span>Loading...</span> 
+        }
         </div> 
       </div>
     </div>
